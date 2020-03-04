@@ -6,7 +6,6 @@ import scala.io.StdIn
 
 object Main extends App {
   println("Bienvenue au Chill-Out !")
-
   while (true) {
     // Convert the user input to lower case, then take an action depending on the value.
     StdIn.readLine.toLowerCase match {

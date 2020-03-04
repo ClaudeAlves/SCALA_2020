@@ -95,4 +95,8 @@ fabric.properties
 *.log
 *.metals
 
+lab1/project/target/*
+lab1/.idea*
+lab1/target/*
+
 # End of https://www.gitignore.io/api/scala,intellij
