@@ -36,7 +36,7 @@ object Tree {
     * Declarations of the nodes' types.
     */
   // Example cases
-  case class Order(order: ExprTree) extends ExprTree
+  case class Order(value: ExprTree) extends ExprTree
   case class Thirsty() extends ExprTree
   case class Hungry() extends ExprTree
   case class Or(lchild: ExprTree, rchild:ExprTree) extends ExprTree

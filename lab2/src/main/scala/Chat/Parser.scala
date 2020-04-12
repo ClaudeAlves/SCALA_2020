@@ -4,7 +4,7 @@ import Chat.Tokens._
 import Tree._
 
 // TODO - step 4
-class Parser(tokenizer: Tokenizer) {
+class  Parser(tokenizer: Tokenizer) {
   import tokenizer._
 
   var curTuple: (String, Token) = ("unknown", UNKNOWN)
