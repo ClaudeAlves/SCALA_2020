@@ -18,7 +18,7 @@ object Beers{
     case "wittekop" => ("wittekop", 2)
     case "punkipa" => ("punkipa", 3)
     case "jackhammer" => ("jackhammer", 3)
-    case "ténébreuse" => ("ténébreuse", 4)
+    case "tenebreuse" => ("tenebreuse", 4)
     case _ => ("boxer", 1)
   }
 }

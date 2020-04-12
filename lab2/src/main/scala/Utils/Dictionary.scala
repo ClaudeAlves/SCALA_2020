@@ -33,7 +33,7 @@ object Dictionary {
     "wittekop" -> "wittekop",
     "punkipa" -> "punkipa",
     "jackhammer" -> "jackhammer",
-    "tenebreuse" -> "tenebreuse",
+    "ténébreuse" -> "tenebreuse",
     "me" -> "me",
     "appelle" -> "appelle",
     "commander" -> "commander",
