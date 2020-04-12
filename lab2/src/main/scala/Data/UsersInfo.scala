@@ -11,7 +11,8 @@ object UsersInfo {
   private var accounts = scala.collection.mutable.Map[String, Double]()
   
   def addUser(name: String) {
-    accounts.put(name, 30.0)
+    _activeUser = name
+    if(!accounts.contains(name)) accounts.put(name, 30.0)
   }
 
   /**
@@ -21,9 +22,13 @@ object UsersInfo {
     * @return the new balance
     */
   // TODO: step 2
-  def purchase(user: String, amount: Double): Double = {
-    val newAmount = (accounts.get(user).get - amount)
-    accounts = accounts + (user -> newAmount)
+  def purchase(amount: Double): Double = {
+    val newAmount = (accounts.get(_activeUser).get - amount)
+    accounts = accounts + (_activeUser -> newAmount)
     newAmount
+  }
+
+  def getSolde(): Double = {
+    return accounts.get(_activeUser).get
   }
 }

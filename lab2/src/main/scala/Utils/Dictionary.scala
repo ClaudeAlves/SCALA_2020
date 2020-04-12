@@ -51,5 +51,6 @@ object Dictionary {
     "le" -> "le",
     "prix" -> "prix",
     "de" -> "de",
+    "m" -> "me"
   )
 }

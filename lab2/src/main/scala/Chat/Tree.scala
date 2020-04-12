@@ -1,5 +1,5 @@
 package Chat
-
+import Data.UsersInfo
 // TODO - step 3
 object Tree {
 
@@ -28,15 +28,22 @@ object Tree {
       // Example cases
       case Thirsty() => "Eh bien, la chance est de votre côté, car nous offrons les meilleures bières de la région !"
       case Hungry() => "Pas de soucis, nous pouvons vous offrir des croissants faits maisons !"
-      case Order(order: ExprTree) => "Voici donc " + order.reply + " ! Cela coûte CHF " + order.computePrice + " et votre nouveau solde est de CHF " + 420 + "."
+      case Order(order: ExprTree) => {
+        val price = order.computePrice
+        UsersInfo.purchase(price)
+        "Voici donc " + order.reply + " ! Cela coûte CHF " + price + " et votre nouveau solde est de CHF " + UsersInfo.getSolde() + "."
+      }
       case Product(amount:Int, prod:String, brand:String) => amount.toString + " " + Data.Products.getProduct(prod, brand)._1
-      case Id(pseudo: String) => "Bonjour, " + pseudo + "!"
+      case Id(pseudo: String) => {
+        UsersInfo.addUser(pseudo)
+        "Bonjour, " + pseudo + "!"
+      }
       case State(value: ExprTree) => value.reply
-      case Solde() => "Le montant actuel de votre solde est de CHF " + 420 + "."
+      case Solde() => "Le montant actuel de votre solde est de CHF " + UsersInfo.getSolde() + "."
       case Price(value: ExprTree) => "Cela coûte CHF " + value.computePrice + "."
       case NotIdentified() => "Veuillez d'abord vous identifier."
       case And(lchild, rchild) => lchild.reply + " et " + rchild.reply
-      case Or(lchild, rchild) => lchild.reply + " or " + rchild.reply
+      case Or(lchild, rchild) => lchild.reply + " ou " + rchild.reply
     }
   }
 
