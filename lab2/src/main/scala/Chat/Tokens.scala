@@ -16,14 +16,7 @@ object Tokens {
   val BIERE: Token       = 6
   val CROISSANT: Token   = 7
   // Brands
-  val MAISON: Token      = 8
-  val CAILLER: Token     = 15
-  val FARMER: Token      = 16
-  val BOXER: Token       = 17
-  val WITTEKOP: Token    = 18
-  val PUNKIPA: Token     = 19
-  val JACKHAMMER: Token  = 20
-  val TENEBREUSE: Token  = 21
+  val MARQUE: Token      = 8
   // Phrase identifier
   val COMMANDER: Token = 22
   val ME: Token = 23

@@ -48,9 +48,51 @@ class  Parser(tokenizer: Tokenizer) {
       }
       else expected(ASSOIFFE, AFFAME)
     }
-    else expected(BONJOUR, JE)
+    // PRIX
+    else if (curToken == COMBIEN) {
+      eat(COMBIEN)
+      eat(COUTE)
+      parsePrice()
+    }
+    else if (curToken == QUEL){
+      eat(QUEL)
+      eat(ETRE)
+      eat(LE)
+      eat(PRIX)
+      eat(DE)
+      parsePrice()
+    }
+    else expected(JE, COMBIEN, QUEL)
+  }
+
+  def parsePrice(): ExprTree = {
+    val product = parseProduct()
+    if(curToken == ET){
+      And(product, parseProduct())
+    } else if (curToken == OU){
+      Or(product, parseProduct())
+    }
+    product
+  }
+
+  def parseProduct(): ExprTree = {
+    if(curToken == NUM){
+      val amount = curValue.toInt
+      readToken()
+      if(curToken == BIERE || curToken == CROISSANT){
+        val product = curValue
+        readToken()
+        if(curToken == MARQUE){
+          Product(amount, product, curValue)
+        } else {
+          Product(amount, product, "")
+        }
+      } else expected(BIERE, CROISSANT)
+    } else expected(NUM)
   }
 
   // Start the process by reading the first token.
   readToken()
 }
+
+

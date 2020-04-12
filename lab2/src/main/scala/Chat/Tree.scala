@@ -37,6 +37,10 @@ object Tree {
     */
   // Example cases
   case class Order(value: ExprTree) extends ExprTree
+  case class Id(value: ExprTree) extends ExprTree
+  case class State(value: ExprTree) extends ExprTree
+  case class Solde(value: ExprTree) extends ExprTree
+  case class Price(value: ExprTree) extends ExprTree
   case class Thirsty() extends ExprTree
   case class Hungry() extends ExprTree
   case class Or(lchild: ExprTree, rchild:ExprTree) extends ExprTree
