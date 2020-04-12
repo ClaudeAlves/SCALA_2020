@@ -8,7 +8,11 @@ object UsersInfo {
   private var _activeUser: String = _
 
   // TODO: step 2 - create an attribute that will contain each user and its current balance.
-  private var accounts = ???
+  private var accounts = scala.collection.mutable.Map[String, Double]()
+  
+  def addUser(name: String) {
+    accounts.put(name, 30.0)
+  }
 
   /**
     * Update an account by decreasing its balance.
@@ -17,5 +21,9 @@ object UsersInfo {
     * @return the new balance
     */
   // TODO: step 2
-  def purchase(user: String, amount: Double): Double = ???
+  def purchase(user: String, amount: Double): Double = {
+    val newAmount = (accounts.get(user).get - amount)
+    accounts = accounts + (user -> newAmount)
+    newAmount
+  }
 }
