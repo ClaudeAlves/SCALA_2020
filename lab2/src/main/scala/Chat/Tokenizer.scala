@@ -20,6 +20,12 @@ class Tokenizer(input: String) {
     case "assoiffe" => ASSOIFFE
     case "affame" => AFFAME
     case "punkipa" => MARQUE
+    case "tenebreuse" => MARQUE
+    case "jackhammer" => MARQUE
+    case "wittekop" => MARQUE
+    case "farmer" => MARQUE
+    case "maison" => MARQUE
+    case "cailler" => MARQUE
     case "commander" => COMMANDER
     case "me" => ME
     case "appelle" => APPELLE
