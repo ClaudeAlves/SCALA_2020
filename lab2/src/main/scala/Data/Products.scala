@@ -14,18 +14,18 @@ object Products {
 
 object Beers{
   def getBeersByType(t:String) = t match {
-    case "Farmer" => ("farmer", 1)
-    case "Wittekop" => ("wittekop", 2)
-    case "PunkIPA" => ("punkipa", 3)
-    case "Jackhammer" => ("jackhammer", 3)
-    case "Ténébreuse" => ("ténébreuse", 4)
+    case "farmer" => ("farmer", 1)
+    case "wittekop" => ("wittekop", 2)
+    case "punkipa" => ("punkipa", 3)
+    case "jackhammer" => ("jackhammer", 3)
+    case "ténébreuse" => ("ténébreuse", 4)
     case _ => ("boxer", 1)
   }
 }
 
 object Croissants{
   def getCroissantByType(t:String) = t match{
-    case "Cailler" => ("croissant cailler", 2)
+    case "cailler" => ("croissant cailler", 2)
     case _ => ("croissant maison", 2)
   }
 }

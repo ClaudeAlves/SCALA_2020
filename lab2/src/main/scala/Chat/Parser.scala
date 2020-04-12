@@ -36,17 +36,47 @@ class  Parser(tokenizer: Tokenizer) {
     if (curToken == BONJOUR) eat(BONJOUR)
     if (curToken == JE) {
       eat(JE)
-      eat(ETRE)
-      if (curToken == ASSOIFFE) {
-        // Here we do not "eat" the token, because we want to have a custom 2-parameters "expected" if the user gave a wrong token.
-        readToken()
-        Thirsty()
+      if (curToken == ETRE) {
+        eat(ETRE)
+        if (curToken == ASSOIFFE) {
+          // Here we do not "eat" the token, because we want to have a custom 2-parameters "expected" if the user gave a wrong token.
+          readToken()
+          State(Thirsty())
+        }
+        else if (curToken == AFFAME) {
+          readToken()
+          State(Hungry())
+        }
+        else if (curToken == PSEUDO){
+          val pseudo = curValue
+          readToken()
+          Id(pseudo)
+        }
+        else expected(ASSOIFFE, AFFAME, PSEUDO)
       }
-      else if (curToken == AFFAME) {
-        readToken()
-        Hungry()
+      else if (curToken == VOULOIR){
+        eat(VOULOIR)
+        if (curToken == COMMANDER){
+          eat(COMMANDER)
+          parseOrder()
+        }
+        else if (curToken == CONNAITRE){
+          eat(CONNAITRE)
+          parseSolde()
+        } else expected(CONNAITRE, COMMANDER)
+
       }
-      else expected(ASSOIFFE, AFFAME)
+      else if (curToken == ME){
+        eat(ME)
+        eat(APPELLE)
+        if(curToken == PSEUDO){
+          val pseudo = curValue
+          readToken()
+          Id(pseudo)
+        } else expected(PSEUDO)
+
+      } else expected(ME)
+
     }
     // PRIX
     else if (curToken == COMBIEN) {
@@ -65,14 +95,41 @@ class  Parser(tokenizer: Tokenizer) {
     else expected(JE, COMBIEN, QUEL)
   }
 
+  def parseOrder(): ExprTree = {
+    val product = parseProduct()
+    if(curToken == ET){
+      eat(ET)
+      return Order(And(product, parseProduct()))
+    }
+    else if (curToken == OU){
+      eat(OU)
+      return Order(Or(product, parseProduct()))
+    }
+    Order(product)
+  }
+
+  def parseSolde(): ExprTree = {
+    if(curToken == MON){
+      eat(MON)
+      if(curToken == SOLDE){
+        readToken()
+        Solde()
+      }
+      else expected(SOLDE)
+    }
+    else expected(MON)
+  }
+
   def parsePrice(): ExprTree = {
     val product = parseProduct()
     if(curToken == ET){
-      And(product, parseProduct())
+      eat(ET)
+      return Price(And(product, parseProduct()))
     } else if (curToken == OU){
-      Or(product, parseProduct())
+      eat(OU)
+      return Price(Or(product, parseProduct()))
     }
-    product
+    Price(product)
   }
 
   def parseProduct(): ExprTree = {
@@ -83,8 +140,11 @@ class  Parser(tokenizer: Tokenizer) {
         val product = curValue
         readToken()
         if(curToken == MARQUE){
-          Product(amount, product, curValue)
+          val brand = curValue
+          readToken()
+          Product(amount, product, brand)
         } else {
+          readToken()
           Product(amount, product, "")
         }
       } else expected(BIERE, CROISSANT)

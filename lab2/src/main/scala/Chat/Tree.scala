@@ -17,6 +17,7 @@ object Tree {
       case Or(lchild: ExprTree, rchild:ExprTree) => Math.min(lchild.computePrice, rchild.computePrice)
       case And(lchild: ExprTree, rchild:ExprTree) => lchild.computePrice + rchild.computePrice
       case Product(amount:Int, prod:String, brand:String) => amount * Data.Products.getProduct(prod, brand)._2
+      case _ => 0
     }
 
     /**
@@ -26,9 +27,16 @@ object Tree {
     def reply: String = this match {
       // Example cases
       case Thirsty() => "Eh bien, la chance est de votre côté, car nous offrons les meilleures bières de la région !"
-      case Hungry() => "Pas de soucis, nous pouvons notamment vous offrir des croissants faits maisons !"
-      case Order(order: ExprTree) => order.reply + order.computePrice
-      case Product(amount:Int, prod:String, brand:String) => amount.toString + Data.Products.getProduct(prod, brand)._1
+      case Hungry() => "Pas de soucis, nous pouvons vous offrir des croissants faits maisons !"
+      case Order(order: ExprTree) => "Voici donc " + order.reply + " ! Cela coûte CHF " + order.computePrice + " et votre nouveau solde est de CHF " + 420 + "."
+      case Product(amount:Int, prod:String, brand:String) => amount.toString + " " + Data.Products.getProduct(prod, brand)._1
+      case Id(pseudo: String) => "Bonjour, " + pseudo + "!"
+      case State(value: ExprTree) => value.reply
+      case Solde() => "Le montant actuel de votre solde est de CHF " + 420 + "."
+      case Price(value: ExprTree) => "Cela coûte CHF " + value.computePrice + "."
+      case NotIdentified() => "Veuillez d'abord vous identifier."
+      case And(lchild, rchild) => lchild.reply + " et " + rchild.reply
+      case Or(lchild, rchild) => lchild.reply + " or " + rchild.reply
     }
   }
 
@@ -36,10 +44,11 @@ object Tree {
     * Declarations of the nodes' types.
     */
   // Example cases
+  case class NotIdentified() extends ExprTree
   case class Order(value: ExprTree) extends ExprTree
-  case class Id(value: ExprTree) extends ExprTree
+  case class Id(value: String) extends ExprTree
   case class State(value: ExprTree) extends ExprTree
-  case class Solde(value: ExprTree) extends ExprTree
+  case class Solde() extends ExprTree
   case class Price(value: ExprTree) extends ExprTree
   case class Thirsty() extends ExprTree
   case class Hungry() extends ExprTree

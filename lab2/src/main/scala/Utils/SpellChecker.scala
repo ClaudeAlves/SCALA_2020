@@ -65,6 +65,7 @@ object SpellChecker {
         .toSeq
 
       // Sort the list by ascending score and return the top element's value (which is the closest word).
+
       dictionary.getOrElse(
         dictionaryDistanceScores.sortBy(_._1).minBy(_._2)._1, 
         throw new Error("Unable to find an occurence in the dictionary.")
