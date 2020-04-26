@@ -39,6 +39,7 @@ object Anagrams extends App {
    *  number of occurrences, but the characters appear in sorted order.
    */
 
+  //here we transform the word to lower case and sort by alphabetical order
   def fingerPrint(s: Word): FingerPrint = (s.toLowerCase()).sortWith(_ < _)
   def fingerPrint(s: Sentence): FingerPrint = s.map(w => fingerPrint(w)).foldLeft("")(_ + _).sortWith(_ < _)
 
@@ -54,7 +55,7 @@ object Anagrams extends App {
    *
    *   "aet"-> List("ate", "eat", "tea")
    */
-
+  //We use an helper function to iterate over the dictionary and store each word in the correct list
   val matchingWords: Map[FingerPrint, List[Word]] = generateMap()
 
   def generateMap(): Map[FingerPrint, List[Word]] = {
@@ -71,12 +72,18 @@ object Anagrams extends App {
 
 
   /** Returns all the anagrams of a given word. */
-  def wordAnagrams(word: Word): List[Word] = matchingWords(fingerPrint(word))
+  def wordAnagrams(word: Word): List[Word] = {
+    if(matchingWords.contains(fingerPrint(word))){
+      matchingWords(fingerPrint(word))
+    } else {
+      Nil
+    }
+  }
 
 
   // Test code with for example:
   println(wordAnagrams("eta"))
-  //println(wordAnagrams("jbdikb"))
+  println(wordAnagrams("jbdikb"))
 
 
   /** Returns the list of all subsequences of a fingerprint.
@@ -93,18 +100,26 @@ object Anagrams extends App {
    */
 
   def subseqs(fp: FingerPrint): List[FingerPrint] = {
-    var result: List[FingerPrint] = List("")
-    for (i <- 0 to fp.length) {
-      for(j <- i to fp.length-1){
-        result = fp.substring(i, j+1) :: result
-      }
+    subseqRecur(fp, "").toList
+  }
+
+  def subseqRecur(fp: FingerPrint, result: FingerPrint): Set[FingerPrint] = fp match {
+    case "" => {
+      //We use a mutable set to remove duplicates
+      var emptySet = Set("")
+      emptySet += result
+      emptySet
     }
-    result
+    case x => {
+      var resultList: Set[FingerPrint] = Set()
+      resultList = subseqRecur(x.substring(1) , result + x.charAt(0)) ++ subseqRecur(x.substring(1), result)
+      resultList
+    }
   }
 
 
   // Test code with for example:
-  println(subseqs("aabbc"))
+  println(subseqs("abc"))
 
 
   /** Subtracts fingerprint `y` from fingerprint `x`.
@@ -116,7 +131,7 @@ object Anagrams extends App {
 
   def subtract(x: FingerPrint, y: FingerPrint): FingerPrint = {
     var z = x
-    for(c <- y) {
+    for(c <- y){
       z = z.replaceFirst(c.toString(), "")
     }
     z
@@ -146,11 +161,32 @@ object Anagrams extends App {
    *  Note: There is only one anagram of an empty sentence.
    */
 
-  def sentenceAnagrams(sentence: Sentence): List[Sentence] = ???
+  def sentenceAnagrams(sentence: Sentence): List[Sentence] = {
+    sentenceAnagramsRecur(fingerPrint(sentence), List())
+  }
+
+  //We use a recursive function to substract each correct fingerprint and find anagrams of the sentence
+  //with the found word but without the found word fingerprint.
+  //The stop condition is when the fingerprint is empty, meaning that we found a correct word for every letter.
+  def sentenceAnagramsRecur(sentence: FingerPrint, resultSentence: Sentence): List[Sentence] = sentence match {
+    case "" => List(resultSentence)
+    case s => {
+      var resultList: List[Sentence] = List()
+      for(subS <- subseqs(s)) {
+        val anagrams = wordAnagrams(subS)
+        if (anagrams != Nil){
+          for(word <- anagrams) {
+            resultList = sentenceAnagramsRecur(subtract(s, subS), word :: resultSentence) ++ resultList
+          }
+        }
+      }
+      resultList
+    }
+  }
 
   // Test code with for example:
-  // println(sentenceAnagrams(List("eat", "tea")))
-  // println(sentenceAnagrams(List("you", "olive")))
-  // println(sentenceAnagrams(List("I", "love", "you")))
+  println(sentenceAnagrams(List("eat", "tea")))
+  println(sentenceAnagrams(List("you", "olive")))
+  println(sentenceAnagrams(List("I", "love", "you")))
 
 }
