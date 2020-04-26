@@ -43,7 +43,7 @@ object Tree {
       case Product(amount:Int, prod:String, brand:String) => amount.toString + " " + Data.Products.getProduct(prod, brand)._1
       case Id(pseudo: String) => {
             UsersInfo.addUser(pseudo)
-            "Bonjour, " + pseudo + "!"
+            "Bonjour, " + pseudo.substring(1) + "!"
       }
       case State(value: ExprTree) => value.reply
       case Solde() => {
