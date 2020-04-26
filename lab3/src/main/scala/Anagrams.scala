@@ -114,10 +114,17 @@ object Anagrams extends App {
    *  appear in `x`.
    */
 
-  def subtract(x: FingerPrint, y: FingerPrint): FingerPrint = ???
+  def subtract(x: FingerPrint, y: FingerPrint): FingerPrint = {
+    var z = x
+    for(c <- y) {
+      z = z.replaceFirst(c.toString(), "")
+    }
+    z
+  }
 
   // Test code with for example:
-  // println(subtract("aabbcc", "abc"))
+  println(subtract("aabbcc", "abc"))
+  println(subtract("jambon", "mon"))
 
 
   /** Returns a list of all anagram sentences of the given sentence.
